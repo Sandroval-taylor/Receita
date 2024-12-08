@@ -2,10 +2,10 @@ from werkzeug.utils import secure_filename
 import psycopg2
 
 # Configurações do banco de dados
-DB_HOST = "localhost"
-DB_PORT = "5432"
+DB_HOST = "postgresql-188561-0.cloudclusters.net"
+DB_PORT = "10029"
 DB_NAME = "Negativo"
-DB_USER = "postgres"
+DB_USER = "sandro"
 DB_PASSWORD = "sandro01"
 
 # Variáveis globais para armazenar resultados das pesquisas
@@ -164,43 +164,3 @@ def connect_to_db():
         user=DB_USER, 
         password=DB_PASSWORD
     )
-
-def template():
-    return {
-        "socios_Cnpj_Raiz": socios_Cnpj_Raiz,
-        "socios_identificador_socio": socios_identificador_socio,
-        "socios_nome": socios_nome,
-        "socios_cpf_cnpj": socios_cpf_cnpj,
-        "socios_qualificacao": socios_qualificacao,
-        "socios_data_entrada_sociedade": socios_data_entrada_sociedade,
-        "socios_pais": socios_pais,
-        "socios_representante_legal": socios_representante_legal,
-        "socios_nome_representante": socios_nome_representante,
-        "socios_qualificacao_representante": socios_qualificacao_representante,
-        "socios_faixa_etaria": socios_faixa_etaria,
-        "empresas_Cnpj_Raiz": empresas_Cnpj_Raiz,
-        "empresas_nome": empresas_nome,
-        "empresas_capital_social": empresas_capital_social,
-        "empresas_ente_federativo": empresas_ente_federativo,
-        "empresas_qualificacao_responsavel": empresas_qualificacao_responsavel,
-        "empresas_natureza_juridica": empresas_natureza_juridica,
-        "empresas_porte": empresas_porte,
-        "estabelecimentos_Cnpj_Raiz": estabelecimentos_Cnpj_Raiz,
-        "estabelecimentos_cnpj_ordem": estabelecimentos_cnpj_ordem,
-        "estabelecimentos_cnpj_dv": estabelecimentos_cnpj_dv,
-        "estabelecimentos_identificador_matriz_filial": estabelecimentos_identificador_matriz_filial,
-        "estabelecimentos_nome_fantasia": estabelecimentos_nome_fantasia,
-        "estabelecimentos_situacao_cadastral": estabelecimentos_situacao_cadastral,
-        "estabelecimentos_data_situacao_cadastral": estabelecimentos_data_situacao_cadastral,
-        "estabelecimentos_motivo_situacao_cadastral": estabelecimentos_motivo_situacao_cadastral,
-        "estabelecimentos_cidade_exterior": estabelecimentos_cidade_exterior,
-        "estabelecimentos_pais": estabelecimentos_pais,
-        "estabelecimentos_data_inicio_atividade": estabelecimentos_data_inicio_atividade,
-        "estabelecimentos_cnae_principal": estabelecimentos_cnae_principal,
-        "estabelecimentos_cnae_secundario": estabelecimentos_cnae_secundario,
-        "estabelecimentos_correio_eletronico": estabelecimentos_correio_eletronico,
-        "estabelecimentos_situacao_especial": estabelecimentos_situacao_especial,
-        "estabelecimentos_data_situacao_especial": estabelecimentos_data_situacao_especial,
-        "estabelecimentos_endereco": estabelecimentos_endereco,
-        "estabelecimentos_telefones": estabelecimentos_telefones
-    }
