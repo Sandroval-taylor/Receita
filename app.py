@@ -3,7 +3,7 @@ from flasgger import Swagger
 from flask_cors import CORS
 from API import api_pesquisa
 from export_excel import export_excel
-#from unificar_escrituras import process_excel
+from unificar import process_excel
 import config
 
 # Inicialização da aplicação Flask
@@ -37,7 +37,7 @@ app.add_url_rule("/API", "API", api_pesquisa, methods=["POST"])
 
 # Rotas de exportação e processamento
 app.add_url_rule("/export_excel", "export_excel", export_excel, methods=["GET"])
-#app.add_url_rule("/process_excel", "process_excel", process_excel, methods=["POST"])
+app.add_url_rule("/process_excel", "unificar", process_excel, methods=["POST"])
 
 # Inicialização do servidor
 if __name__ == "__main__":

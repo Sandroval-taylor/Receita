@@ -131,12 +131,15 @@ def api_pesquisa():
 
 
         config.sincronizar_tamanhos_por_cnpj_raiz()
+        print("socios_nome:", config.socios_nome)
+        print("empresas_capital_social:", config.empresas_capital_social)
+        print("empresas_qualificacao_responsavel:", config.empresas_qualificacao_responsavel)
 
         resultado_json = {
             "sócios": {
                 "Cnpj Raiz": config.socios_Cnpj_Raiz,
                 "Socios": [
-                    f"{identificador} - {nome} {cpf} - {faixa_etaria} - Data de Entrada: {data_entrada}"
+                    f"{identificador} - {nome} {cpf} - {faixa_etaria} - Entrada em: {data_entrada}"
                     for identificador, nome, cpf, faixa_etaria, data_entrada in zip(
                         config.socios_identificador_socio,
                         config.socios_nome,

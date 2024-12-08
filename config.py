@@ -85,75 +85,73 @@ def limpar_variaveis_globais():
     estabelecimentos_endereco, estabelecimentos_telefones, estabelecimentos_cnpj_consolidado = [], [], []
 
 # Sincronização de dados por CNPJ Raiz
-def sincronizar_tamanhos_por_cnpj_raiz():
+def sincronizar_tamanhos_por_cnpj_raiz(): #Sincroniza o tamanho das listas globais de empresas, sócios e estabelecimentos com base no CNPJ Raiz. Garante que os índices correspondem às mesmas entidades.
+    # Mapeia todos os índices de CNPJ Raiz para os estabelecimentos
     indices_por_cnpj = {}
     for idx, cnpj_raiz in enumerate(estabelecimentos_Cnpj_Raiz):
         if cnpj_raiz not in indices_por_cnpj:
             indices_por_cnpj[cnpj_raiz] = []
         indices_por_cnpj[cnpj_raiz].append(idx)
 
-    novos_socios_Cnpj_Raiz, novos_socios_pais, novos_socios_representante_legal = [], [], []
-    novos_socios_nome_representante, novos_socios_qualificacao_representante, novos_socios_nome = [], [], []
-    novos_empresas_Cnpj_Raiz, novos_empresas_nome, novos_empresas_capital_social = [], [], []
-    novos_empresas_ente_federativo, novos_empresas_qualificacao_responsavel = [], []
-    novos_empresas_natureza_juridica, novos_empresas_porte = [], []
+    # Função auxiliar para buscar dados por índice ou retornar valores padrão
+    def buscar_dados(lista, idx):
+        return lista[idx] if idx is not None and idx < len(lista) else None
 
+    # Função auxiliar para preencher listas com valores sincronizados
+    def preencher_lista(dados, indices):
+        return [dados for _ in indices]
+
+    # Variáveis para armazenar as listas sincronizadas
+    novos_socios = {k: [] for k in ["Cnpj_Raiz", "pais", "representante_legal", "nome_representante", "qualificacao_representante", "nome"]}
+    novos_empresas = {k: [] for k in ["Cnpj_Raiz", "nome", "capital_social", "ente_federativo", "qualificacao_responsavel", "natureza_juridica", "porte"]}
+
+    # Sincronizar dados por CNPJ Raiz
     for cnpj_raiz, indices in indices_por_cnpj.items():
-        try:
-            idx_socios = socios_Cnpj_Raiz.index(cnpj_raiz) if cnpj_raiz in socios_Cnpj_Raiz else None
-            dados_socios = (
-                socios_Cnpj_Raiz[idx_socios] if idx_socios is not None else None,
-                socios_pais[idx_socios] if idx_socios is not None else None,
-                socios_representante_legal[idx_socios] if idx_socios is not None else None,
-                socios_nome_representante[idx_socios] if idx_socios is not None else None,
-                socios_qualificacao_representante[idx_socios] if idx_socios is not None else None,
-                socios_nome[idx_socios] if idx_socios is not None else None
-            )
-        except IndexError:
-            dados_socios = (None, None, None, None, None, None)
+        # Buscar dados dos sócios
+        idx_socios = socios_Cnpj_Raiz.index(cnpj_raiz) if cnpj_raiz in socios_Cnpj_Raiz else None
+        dados_socios = {
+            "Cnpj_Raiz": buscar_dados(socios_Cnpj_Raiz, idx_socios),
+            "pais": buscar_dados(socios_pais, idx_socios),
+            "representante_legal": buscar_dados(socios_representante_legal, idx_socios),
+            "nome_representante": buscar_dados(socios_nome_representante, idx_socios),
+            "qualificacao_representante": buscar_dados(socios_qualificacao_representante, idx_socios),
+            "nome": buscar_dados(socios_nome, idx_socios),
+        }
 
-        try:
-            idx_empresas = empresas_Cnpj_Raiz.index(cnpj_raiz) if cnpj_raiz in empresas_Cnpj_Raiz else None
-            dados_empresas = (
-                empresas_Cnpj_Raiz[idx_empresas] if idx_empresas is not None else None,
-                empresas_nome[idx_empresas] if idx_empresas is not None else None,
-                empresas_capital_social[idx_empresas] if idx_empresas is not None else None,
-                empresas_ente_federativo[idx_empresas] if idx_empresas is not None else None,
-                empresas_qualificacao_responsavel[idx_empresas] if idx_empresas is not None else None,
-                empresas_natureza_juridica[idx_empresas] if idx_empresas is not None else None,
-                empresas_porte[idx_empresas] if idx_empresas is not None else None
-            )
-        except IndexError:
-            dados_empresas = (None, None, None, None, None, None, None)
+        # Buscar dados das empresas
+        idx_empresas = empresas_Cnpj_Raiz.index(cnpj_raiz) if cnpj_raiz in empresas_Cnpj_Raiz else None
+        dados_empresas = {
+            "Cnpj_Raiz": buscar_dados(empresas_Cnpj_Raiz, idx_empresas),
+            "nome": buscar_dados(empresas_nome, idx_empresas),
+            "capital_social": buscar_dados(empresas_capital_social, idx_empresas),
+            "ente_federativo": buscar_dados(empresas_ente_federativo, idx_empresas),
+            "qualificacao_responsavel": buscar_dados(empresas_qualificacao_responsavel, idx_empresas),
+            "natureza_juridica": buscar_dados(empresas_natureza_juridica, idx_empresas),
+            "porte": buscar_dados(empresas_porte, idx_empresas),
+        }
 
-        for _ in indices:
-            novos_socios_Cnpj_Raiz.append(dados_socios[0])
-            novos_socios_pais.append(dados_socios[1])
-            novos_socios_representante_legal.append(dados_socios[2])
-            novos_socios_nome_representante.append(dados_socios[3])
-            novos_socios_qualificacao_representante.append(dados_socios[4])
-            novos_socios_nome.append(dados_socios[5])
-            novos_empresas_Cnpj_Raiz.append(dados_empresas[0])
-            novos_empresas_nome.append(dados_empresas[1])
-            novos_empresas_capital_social.append(dados_empresas[2])
-            novos_empresas_ente_federativo.append(dados_empresas[3])
-            novos_empresas_qualificacao_responsavel.append(dados_empresas[4])
-            novos_empresas_natureza_juridica.append(dados_empresas[5])
-            novos_empresas_porte.append(dados_empresas[6])
+        # Preencher as listas sincronizadas
+        for key, value in dados_socios.items():
+            novos_socios[key].extend(preencher_lista(value, indices))
+        for key, value in dados_empresas.items():
+            novos_empresas[key].extend(preencher_lista(value, indices))
 
-    socios_Cnpj_Raiz[:] = novos_socios_Cnpj_Raiz
-    socios_pais[:] = novos_socios_pais
-    socios_representante_legal[:] = novos_socios_representante_legal
-    socios_nome_representante[:] = novos_socios_nome_representante
-    socios_qualificacao_representante[:] = novos_socios_qualificacao_representante
-    socios_nome[:] = novos_socios_nome
-    empresas_Cnpj_Raiz[:] = novos_empresas_Cnpj_Raiz
-    empresas_nome[:] = novos_empresas_nome
-    empresas_capital_social[:] = novos_empresas_capital_social
-    empresas_ente_federativo[:] = novos_empresas_ente_federativo
-    empresas_qualificacao_responsavel[:] = novos_empresas_qualificacao_responsavel
-    empresas_natureza_juridica[:] = novos_empresas_natureza_juridica
-    empresas_porte[:] = novos_empresas_porte
+    # Substituir as listas globais pelas listas sincronizadas
+    socios_Cnpj_Raiz[:] = novos_socios["Cnpj_Raiz"]
+    socios_pais[:] = novos_socios["pais"]
+    socios_representante_legal[:] = novos_socios["representante_legal"]
+    socios_nome_representante[:] = novos_socios["nome_representante"]
+    socios_qualificacao_representante[:] = novos_socios["qualificacao_representante"]
+    socios_nome[:] = novos_socios["nome"]
+
+    empresas_Cnpj_Raiz[:] = novos_empresas["Cnpj_Raiz"]
+    empresas_nome[:] = novos_empresas["nome"]
+    empresas_capital_social[:] = novos_empresas["capital_social"]
+    empresas_ente_federativo[:] = novos_empresas["ente_federativo"]
+    empresas_qualificacao_responsavel[:] = novos_empresas["qualificacao_responsavel"]
+    empresas_natureza_juridica[:] = novos_empresas["natureza_juridica"]
+    empresas_porte[:] = novos_empresas["porte"]
+
 
 
 def connect_to_db():
